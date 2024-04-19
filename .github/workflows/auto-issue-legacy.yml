@@ -27,12 +27,11 @@ jobs:
         uses: actions/checkout@v4
         # Added auto-retry feature as fail-safe
         # to unexpected rate-limit issue.
-      - uses: nashmaniac/create-issue-action@v1.1
+      - uses: maxkomarychev/oction-create-issue@v0.7.1
         with: 
-          title: d
+          title: 'Test new legacy title'
           token: GITHUB_TOKEN
           labels: bug, enhancement
           assignees: KemingHe
-          body: d
-            
+          body: 'hello issue.'
             
