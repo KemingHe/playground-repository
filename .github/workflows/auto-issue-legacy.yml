@@ -22,12 +22,20 @@ jobs:
     steps:
       - name: Checkout yml
         uses: actions/checkout@v4
-      - name: Legacy create issue
-        uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Added auto-retry feature as fail-safe
+        # to unexpected rate-limit issue.
+      - name: Rate-limit fail-safe retries
+        uses: nick-fields/retry@v3.0.0
         with:
-          filename: './.github/issue-templates/legacy-template.md'
-          update_existing: true
-          search_existing: all
-          
+          max_attempts: 3
+          timeout_minutes: 1
+          command: |
+            steps:
+            - name: Legacy create issue
+              uses: JasonEtco/create-an-issue@v2
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                filename: './.github/issue-templates/legacy-template.md'
+                update_existing: true
+                search_existing: all
