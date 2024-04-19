@@ -25,9 +25,9 @@ jobs:
       - uses: dacbd/create-issue-action@v2.0.0
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: CICD Auto-issue on branch ${{ github.ref }}
-          assignees: KemingHe, ${{ github.actor }}
-          label: bug, enhancement, cicd
+          title: 'CICD Auto-issue on branch ${{ github.ref }}'
+          assignees: KemingHe,${{ github.actor }}
+          label: bug,enhancement,cicd
           body: |
             # Oh no! A status check failed with the following context:
             [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
