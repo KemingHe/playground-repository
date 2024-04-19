@@ -22,10 +22,7 @@ jobs:
     steps:
       - name: Checkout yml
         uses: actions/checkout@v4
-        # Added auto-retry feature as fail-safe
-        # to unexpected rate-limit issue.
       - uses: dacbd/create-issue-action@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
           title: 'Test new legacy title'
+          token: ${{ secrets.GITHUB_TOKEN }}
