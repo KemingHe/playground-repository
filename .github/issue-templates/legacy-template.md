@@ -13,17 +13,27 @@ Template markdown for creating issues,
 for the legacy auto-issue actions.
 -->
 
-- Workflow: {{ context.workflow }}
-- Author: {{ context.actor }}
-
 The full `tools.context.payload` content is listed below:
 
-- Context.workflow: {{ context.payload }}
-- Workflow: {{ workflow }}
 - Event: {{ event }}
 - Sha: {{ sha }}
 - Ref: {{ ref }}
-- Payload: {{ payload }}
-- Payload.sender: {{ payload.sender }}
+- Workflow: {{ workflow }}
+- Action: {{ action }}
+- Actor: {{ actor }}
+
+
+- Payload.action: {{ payload.action }}
 - Payload.sender.login: {{ payload.sender.login }}
+- Payload.pull_request.number: {{ payload.pull_request.number }}
+- Payload.pull_request.html_url: {{ payload.pull_request.html_url }}
+- Payload.pull_request.body: {{ payload.pull_request.body }}
+- Payload.issue.number: {{ payload.pull_request.number }}
+- Payload.issue.html_url: {{ payload.pull_request.html_url }}
+- Payload.issue.body: {{ payload.pull_request.body }}
+
+- Payload.repository.full_name: {{ payload.repository.full_name }}
 - Payload.repository.name: {{ payload.repository.name }}
+- Payload.repository.owner.login: {{ payload.repository.owner.login }}
+- Payload.repository.owner.name: {{ payload.repository.owner.name }}
+- Payload.repository.html_url: {{ payload.repository.html_url }}
