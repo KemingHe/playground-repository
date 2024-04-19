@@ -1,14 +1,17 @@
-<!-- 
-./.github/issue-templates/legacy-template.md
-
-Template markdown for creating issues,
-for the legacy auto-issue actions.
--->
 ---
 title: Issue created on {{ date | date ('MMM Do at HH:mm:ss') }}
 assignees: KemingHe
 labels: bug, enhancement
 ---
+
+<!-- 
+RELOCATED from top because bad parser.
+
+./.github/issue-templates/legacy-template.md
+
+Template markdown for creating issues,
+for the legacy auto-issue actions.
+-->
 
 - Workflow: {{ tools.context.workflow }}
 - Author: {{ tools.context.actor }}
