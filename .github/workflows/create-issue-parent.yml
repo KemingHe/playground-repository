@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   failure-workflow:
-    uses: .github/workflows/always-fail.yml
+    uses: ./.github/workflows/always-fail.yml
   report-status:
     needs: failure-workflow
     if: ${{ needs.failure-workflow.result == 'failture' }}
