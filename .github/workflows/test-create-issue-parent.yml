@@ -1,7 +1,7 @@
 # ./.github/workflows/create-issue-parent.yml
 #
-# Parent workflow that fails the job and triggers
-# create-issue-on-failure
+# Parent workflow that creates an issue when
+# called reusable workflow fails.
 
 name: Parent Workflow
 
@@ -10,9 +10,37 @@ on:
   
 permissions:
   contents: read
+  pull-requests: read
   issues: write
 
 jobs:
+  test-success-no-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Call success workflow
+        id: success-step
+        uses: ./.github/workflows/always-pass.yml
+      
+      - name: Report status when fail
+        id: report-step
+        if: ${{ failure() }}
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: Action failed on PR ${{ github.event.number }}
+          assignees: ${{ github.actor }}
+          labels: codeql
+          body: |
+            ### Failure Report:
+            
+            > Failed run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    
+            - **Author:** ${{ github.actor }}
+            - **Branch:** ${{ github.ref }}
+            - **Commit:** ${{ github.sha }}
+            
   test-failure-report:
     runs-on: ubuntu-latest
     steps:
