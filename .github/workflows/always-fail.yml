@@ -1,4 +1,4 @@
-# ./.github/workflow/always-fail.yml
+# ./.github/workflows/always-fail.yml
 #
 # A workflow that always fails when ran,
 # for testing auto-issue.
@@ -6,7 +6,7 @@
 name: Always Failing Workflow
 
 on:
-  [push, pull_request]
+  workflow_call:
 
 jobs:
   fail:
@@ -14,4 +14,3 @@ jobs:
     steps:
       - name: Fail and exit
         run: exit 1
-        
