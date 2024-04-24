@@ -18,11 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Call success workflow
-        id: success-step
-        uses: ./.github/workflows/always-pass.yml
-      
+      - run: exit 0
       - name: Report status when fail
         id: report-step
         if: ${{ failure() }}
@@ -45,11 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Call failure workflow
-        id: reusable-step
-        uses: ./.github/workflows/always-fail.yml
-      
+      - run: exit 1
       - name: Report status when fail
         id: report-step
         if: ${{ failure() }}
