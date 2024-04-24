@@ -13,15 +13,19 @@ permissions:
   issues: write
 
 jobs:
-  failure-workflow:
-    uses: ./.github/workflows/always-fail.yml
-  report-status:
+  test-failure-report:
     runs-on: ubuntu-latest
-    needs: failure-workflow
-    if: ${{ needs.failure-workflow.result == 'failture' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: dacbd/create-issue-action@main
+      
+      - name: Call failure workflow
+        id: reusable-step
+        uses: ./.github/workflows/always-fail.yml
+      
+      - name: Report status when fail
+        id: report-step
+        if: ${{ failure() }}
+        uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
           title: Action failed on PR ${{ github.event.number }}
