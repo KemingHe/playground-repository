@@ -6,12 +6,8 @@
 name: Parent Workflow
 
 on:
-  workflow_run:
-    workflows:
-      - '*'
-    types:
-     - 'completed'
-
+  [push, pull_request]
+  
 permissions:
   contents: read
   issues: write
