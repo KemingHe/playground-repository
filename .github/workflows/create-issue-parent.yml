@@ -1,0 +1,38 @@
+# ./.github/workflows/create-issue-parent.yml
+#
+# Parent workflow that fails the job and triggers
+# create-issue-on-failure
+
+name: Parent Workflow
+
+on:
+  workflow_run:
+    workflows:
+      - '*'
+    types:
+     - 'completed'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  failure-workflow:
+    uses: .github/workflows/always-fail.yml
+  report-status:
+    needs: failure-workflow
+    if: ${{ needs.failure-workflow.result == 'failture' }}
+    uses: dacbd/create-issue-action@main
+    with:
+      token: ${{ github.token }}
+      title: Action failed on PR ${{ github.event.number }}
+      assignees: ${{ github.actor }}
+      labels: codeql
+      body: |
+        ### Failure Report:
+        
+        > Failed run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+        - **Author:** ${{ github.actor }}
+        - **Branch:** ${{ github.ref }}
+        - **Commit:** ${{ github.sha }}
