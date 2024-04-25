@@ -30,9 +30,9 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "time=$(date -u +'%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+            echo "time=$(TZ='America/New_York' date -u +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
           else
-            echo "time=${{ github.event.pull_request.updated_at }}" >> "$GITHUB_OUTPUT"
+            echo "time=$(TZ='America/New_York' date -d '${{ github.event.pull_request.updated_at }}' +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Report status
