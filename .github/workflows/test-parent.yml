@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+            echo "time=$(date -u +'%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
           else
             echo "time=${{ github.event.pull_request.updated_at }}" >> "$GITHUB_OUTPUT"
           fi
@@ -41,7 +41,7 @@ jobs:
         with:
           token: ${{ github.token }}
           title: |
-            Workflow ${{ github.workflow }} failed on ${{ github.event_name }} at ${{ steps.event-time.outputs.time }}
+            [${{ github.workflow }}] failed on ${{ github.event_name }} at ${{ steps.event-time.outputs.time }}
           assignees: ${{ github.actor }}
           labels: codeql
           body: |
