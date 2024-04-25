@@ -20,7 +20,7 @@ jobs:
   report-when-fail:
     needs: fail-job
     runs-on: ubuntu-latest
-    if: ${{ needs.fail-job.result == 'failure'}}
+    if: always() && needs.fail-job.result == 'failure'
     steps:
       - uses: actions/checkout@v4
       - name: Report status when fail
