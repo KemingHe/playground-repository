@@ -41,14 +41,16 @@ jobs:
         with:
           token: ${{ github.token }}
           title: |
-            [${{ github.workflow }}] failed on ${{ github.event_name }} at ${{ steps.event-time.outputs.time }}
-          assignees: ${{ github.actor }}
+            [${{ github.workflow }}] failed during [${{ github.event_name }}] at [OH local time ${{ steps.event-time.outputs.time }}]
+          assignees: KemingHe,${{ github.actor }},${{ github.triggering_actor }}
           labels: codeql
           body: |
             ### Failure Report:
             
-            > Failed run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            > Link to failed run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            > Path to triggered workflow: `${{ github.workflow_ref }}`
     
-            - **Author:** ${{ github.actor }}
+            - **Author:** ${{ github.triggering_actor }}
             - **Branch:** ${{ github.ref }}
             - **Commit:** ${{ github.sha }}
