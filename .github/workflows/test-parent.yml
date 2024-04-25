@@ -22,14 +22,26 @@ jobs:
     runs-on: ubuntu-latest
     if: always() && needs.fail-job.result == 'failure'
     steps:
-      - uses: actions/checkout@v4
-      - name: Report status when fail
-        id: report-step
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get event time
+        id: event-time
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+          else
+            echo "time=${{ github.event.pull_request.updated_at }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report status
+        id: report-status
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
           title: |
-            Workflow ${{ github.workflow }} failed on ${{ github.event_name }} on $(date +'%Y-%m-%d')
+            Workflow ${{ github.workflow }} failed on ${{ github.event_name }} at ${{ steps.event-time.outputs.time }}
           assignees: ${{ github.actor }}
           labels: codeql
           body: |
