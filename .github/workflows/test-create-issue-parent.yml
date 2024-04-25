@@ -25,7 +25,8 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Action failed on PR ${{ github.event.number }}
+          title: |
+            Workflow ${{ github.workflow }} failed on ${{ github.event_name }} on $(date +'%Y-%m-%d')
           assignees: ${{ github.actor }}
           labels: codeql
           body: |
