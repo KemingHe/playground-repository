@@ -14,42 +14,22 @@ permissions:
   issues: write
 
 jobs:
-  test-success-no-report:
+  fail-job:
+    uses: ./.github/workflows/common-child-fail.yml    
+
+  report-when-fail:
+    needs: fail-job
     runs-on: ubuntu-latest
+    if: ${{ needs.fail-job.result == 'failure'}}
     steps:
       - uses: actions/checkout@v4
-      - run: exit 0
       - name: Report status when fail
         id: report-step
-        if: ${{ failure() }}
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
           title: |
             Workflow ${{ github.workflow }} failed on ${{ github.event_name }} on $(date +'%Y-%m-%d')
-          assignees: ${{ github.actor }}
-          labels: codeql
-          body: |
-            ### Failure Report:
-            
-            > Failed run link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-    
-            - **Author:** ${{ github.actor }}
-            - **Branch:** ${{ github.ref }}
-            - **Commit:** ${{ github.sha }}
-            
-  test-failure-report:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: exit 1
-      - name: Report status when fail
-        id: report-step
-        if: ${{ failure() }}
-        uses: dacbd/create-issue-action@main
-        with:
-          token: ${{ github.token }}
-          title: Action failed on PR ${{ github.event.number }}
           assignees: ${{ github.actor }}
           labels: codeql
           body: |

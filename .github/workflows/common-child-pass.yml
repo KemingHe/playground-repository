@@ -1,7 +1,7 @@
-# ./.github/workflows/always-pass.yml
+# ./.github/workflows/common-child-pass.yml
 #
-# Reusable workflow that always passes when called.
-name: Always Pass Workflow
+# A reusable workflow that always passes.
+name: Always-pass Workflow
 
 on:
   workflow_call:

@@ -1,8 +1,7 @@
-# ./.github/workflows/always-fail.yml
+# ./.github/workflows/common-child-fail.yml
 #
-# A workflow that always fails when ran,
-# for testing auto-issue.
-name: Always Fail Workflow
+# A callable workflow that always fails.
+name: Always-fail Workflow
 
 on:
   workflow_call:
