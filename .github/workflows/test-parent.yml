@@ -45,12 +45,17 @@ jobs:
           assignees: KemingHe,${{ github.actor }},${{ github.triggering_actor }}
           labels: codeql
           body: |
-            ### Failure Report:
+            ## Failure Report:
             
-            > Link to failed run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            > Path to triggered workflow: `${{ github.workflow_ref }}`
+            > [!IMPORTANT]
+            > Details on failed run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
     
             - **Author:** ${{ github.triggering_actor }}
+
             - **Branch:** ${{ github.ref }}
             - **Commit:** ${{ github.sha }}
+            - **Workflow Path:** `${{ github.workflow_ref }}`
+
+            - [ ] **Task: Review failed run, fix the issue(s), and re-run until successful.**
+
+            This issue was created automatically by GitHub, through `dacbd/create-issue-action@main` action and @KemingHe's workflow.
