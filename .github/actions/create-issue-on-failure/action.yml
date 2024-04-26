@@ -1,0 +1,50 @@
+name: Create Issue on Failure
+description: Creates an issue when a step/job fails
+
+inputs:
+  github_context:
+    description: The entire github context for all the necessary information.
+    type: string
+    required: true
+
+runs:
+  using: composite
+  env:
+    GITHUB_CONTEXT: ${{ fromJson(inputs.github_context) }}
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get event time
+      id: event-time
+      run: |
+        if [[ "${{ env.GITHUB_CONTEXT.event_name }}" == "push" ]]; then
+          echo "time=$(TZ='America/New_York' date +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+        else
+          echo "time=$(TZ='America/New_York' date -d '${{ env.GITHUB_CONTEXT.event.pull_request.updated_at }}' +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+        fi
+      shell: bash
+
+    - name: Create Issue
+      uses: dacbd/create-issue-action@main
+      with:
+        token: ${{ env.GITHUB_CONTEXT.token }}
+        title: |
+          [${{ env.GITHUB_CONTEXT.workflow }}] failed during [${{ env.GITHUB_CONTEXT.event_name }}] at [OH local time ${{ steps.event-time.outputs.time }}]
+        assignees: KemingHe,${{ env.GITHUB_CONTEXT.actor }},${{ env.GITHUB_CONTEXT.triggering_actor }}
+        labels: CICD
+        body: |
+          ## Failure Report:
+          
+          > [!IMPORTANT]
+          > Details on failed run: https://github.com/${{ env.GITHUB_CONTEXT.repository }}/actions/runs/${{ env.GITHUB_CONTEXT.run_id }}
+
+          - Author: ${{ env.GITHUB_CONTEXT.triggering_actor }}
+          - Branch: ${{ env.GITHUB_CONTEXT.ref }}
+          - Commit: ${{ env.GITHUB_CONTEXT.sha }}
+          - Workflow Path: `${{ env.GITHUB_CONTEXT.workflow_ref }}`
+
+          - [ ] **Task**: Review failed run, fix the issue(s), and re-run until successful.
+
+          > This issue was created automatically by GitHub, through `dacbd/create-issue-action@main` action and @KemingHe's workflow.

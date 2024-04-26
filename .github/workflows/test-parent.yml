@@ -22,40 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     if: always() && needs.fail-job.result == 'failure'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get event time
-        id: event-time
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "time=$(TZ='America/New_York' date +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
-          else
-            echo "time=$(TZ='America/New_York' date -d '${{ github.event.pull_request.updated_at }}' +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Report status
-        id: report-status
-        uses: dacbd/create-issue-action@main
+      - name: Call create issue on failure action
+        uses: ./.github/actions/create-issue-on-failure
         with:
-          token: ${{ github.token }}
-          title: |
-            [${{ github.workflow }}] failed during [${{ github.event_name }}] at [OH local time ${{ steps.event-time.outputs.time }}]
-          assignees: KemingHe,${{ github.actor }},${{ github.triggering_actor }}
-          labels: codeql
-          body: |
-            ## Failure Report:
-            
-            > [!IMPORTANT]
-            > Details on failed run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-    
-            - **Author:** ${{ github.triggering_actor }}
-
-            - **Branch:** ${{ github.ref }}
-            - **Commit:** ${{ github.sha }}
-            - **Workflow Path:** `${{ github.workflow_ref }}`
-
-            - [ ] **Task: Review failed run, fix the issue(s), and re-run until successful.**
-
-            This issue was created automatically by GitHub, through `dacbd/create-issue-action@main` action and @KemingHe's workflow.
+          github_context: ${{ toJson(github) }}
+          
