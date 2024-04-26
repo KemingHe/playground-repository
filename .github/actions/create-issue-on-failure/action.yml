@@ -8,10 +8,9 @@ inputs:
     required: true
 
 runs:
-  using: composite
+  using: "composite"
   env:
     GITHUB_CONTEXT: ${{ fromJson(inputs.github_context) }}
-
   steps:
     - name: Get event time
       id: event-time
