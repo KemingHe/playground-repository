@@ -25,7 +25,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get time of failure
+        id: event-time
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "time=$(TZ='America/New_York' date -d '${{ github.event.pull_request.updated_at }}' +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+          else
+            echo "time=$(TZ='America/New_York' date +'%m/%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+          fi
+        shell: bash
+
       - name: Call create issue on failure action
         uses: ./.github/actions/create-issue-on-failure
         with:
-          github_context: ${{ toJson(github) }}
+          # For dacbd/create-issue-action@main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          run_id: ${{ github.run_id }}
+          event_name: ${{ github.event_name }}
+          time: ${{ steps.event-time.outputs.time }}
+
+          workflow: ${{ github.workflow }}
+          workflow_ref: ${{ github.workflow_ref}}
+
+          actor: ${{ github.actor }}
+          triggering_actor: ${{ github.event.pull_request.user.login }}
+
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          sha: ${{ github.sha }}
