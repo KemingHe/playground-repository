@@ -74,14 +74,14 @@ runs:
           > [!IMPORTANT]
           > Details on failed run: https://github.com/${{ inputs.repository }}/actions/runs/${{ inputs.run_id }}
 
-          - Author: ${{ inputs.triggering_actor }}
-          - Branch: ${{ inputs.ref }}
+          - Author: @${{ inputs.triggering_actor }}
+          - Branch: `${{ inputs.ref }}`
           - Commit: ${{ inputs.sha }}
           - Workflow Path: `${{ inputs.workflow_ref }}`
 
           - [ ] **Task**: Review failed run, fix the issue(s), and re-run until successful.
 
           > This issue was created automatically by GitHub, 
-          > through `dacbd/create-issue-action@main` action and @KemingHe's workflow.
+          > through `dacbd/create-issue-action@main` action and KemingHe's workflow.
           > Please do not close this issue until the issue is resolved.
           > If you have any questions, please contact @KemingHe.
