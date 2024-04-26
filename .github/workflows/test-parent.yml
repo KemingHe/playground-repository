@@ -3,7 +3,7 @@
 # Parent workflow that creates an issue when
 # called reusable workflow fails.
 
-name: Parent Workflow
+name: Auto CI
 
 on:
   [push, pull_request]
@@ -49,8 +49,8 @@ jobs:
           workflow_ref: ${{ github.workflow_ref}}
 
           actor: ${{ github.actor }}
-          triggering_actor: ${{ github.event.pull_request.user.login }}
+          triggering_actor: ${{ github.triggering_actor }}
 
-          repository: ${{ github.repository }}
           ref: ${{ github.ref }}
           sha: ${{ github.sha }}
+          repository: ${{ github.repository }}
