@@ -13,9 +13,6 @@ runs:
     GITHUB_CONTEXT: ${{ fromJson(inputs.github_context) }}
 
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Get event time
       id: event-time
       run: |
@@ -26,6 +23,7 @@ runs:
         fi
       shell: bash
 
+    # Make sure code is already checked out in the parent workflow.
     - name: Create Issue
       uses: dacbd/create-issue-action@main
       with:

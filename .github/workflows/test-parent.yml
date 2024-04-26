@@ -22,8 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     if: always() && needs.fail-job.result == 'failure'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Call create issue on failure action
         uses: ./.github/actions/create-issue-on-failure
         with:
           github_context: ${{ toJson(github) }}
-          
